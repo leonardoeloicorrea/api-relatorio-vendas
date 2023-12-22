@@ -8,6 +8,7 @@ import com.leonardo.apirelatoriovendas.dtos.SellerResponseDTO;
 import com.leonardo.apirelatoriovendas.entities.Seller;
 import com.leonardo.apirelatoriovendas.repositories.SellerRepository;
 import com.leonardo.apirelatoriovendas.services.exceptions.DatabaseException;
+import com.leonardo.apirelatoriovendas.services.exceptions.ResourceNotFoundException;
 
 @Service
 public class SellerService {
@@ -22,6 +23,10 @@ public class SellerService {
         return new SellerResponseDTO(entity);
     }
 
+    public SellerResponseDTO findById(Long id) {
+        return new SellerResponseDTO(findEntity(id));
+    }
+
     public Seller convertDtoToEntity(SellerRequestDTO sellerDTO) {
         Seller entity = new Seller();
         entity.setName(sellerDTO.getName());
@@ -34,6 +39,10 @@ public class SellerService {
         if (sellerRepository.existsByCpf(entity.getCpf())) {
             throw new DatabaseException("The entered cpf already exists");
         }
+    }
+
+    private Seller findEntity(Long id) {
+        return sellerRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Seller not found"));
     }
 
 }
