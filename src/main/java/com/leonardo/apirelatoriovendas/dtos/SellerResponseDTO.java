@@ -5,8 +5,8 @@ import java.time.LocalDate;
 import java.time.Period;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.leonardo.apirelatoriovendas.entities.Seller;
 
-import entities.Seller;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
