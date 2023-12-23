@@ -10,6 +10,7 @@ import com.leonardo.apirelatoriovendas.dtos.SaleRequestDTO;
 import com.leonardo.apirelatoriovendas.dtos.SaleResponseDTO;
 import com.leonardo.apirelatoriovendas.entities.Sale;
 import com.leonardo.apirelatoriovendas.repositories.SaleRepository;
+import com.leonardo.apirelatoriovendas.services.exceptions.ResourceNotFoundException;
 
 @Service
 public class SaleService {
@@ -27,11 +28,19 @@ public class SaleService {
         return new SaleResponseDTO(entity);
     }
 
+    public SaleResponseDTO findById(Long id) {
+        return new SaleResponseDTO(findEntity(id));
+    }
+
     private Sale convertDtoToEntity(SaleRequestDTO saleRequestDTO) {
         Sale entity = new Sale();
         entity.setSeller(sellerService.findEntity(saleRequestDTO.getSellerId()));
         entity.setTotalValue(saleRequestDTO.getTotalValue());
         return entity;
+    }
+
+    private Sale findEntity(Long id) {
+        return saleRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Sale not found"));
     }
 
 }
