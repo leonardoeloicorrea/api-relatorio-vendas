@@ -1,6 +1,8 @@
 package com.leonardo.apirelatoriovendas.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.leonardo.apirelatoriovendas.dtos.SellerRequestDTO;
@@ -25,6 +27,10 @@ public class SellerService {
 
     public SellerResponseDTO findById(Long id) {
         return new SellerResponseDTO(findEntity(id));
+    }
+
+    public Page<SellerResponseDTO> findAllSellers(Pageable pageable) {
+        return sellerRepository.findAllSellers(pageable).map(x -> new SellerResponseDTO(x));
     }
 
     public SellerResponseDTO updateSeller(Long id, SellerRequestDTO sellerRequestDTO) {
