@@ -3,6 +3,7 @@ package com.leonardo.apirelatoriovendas.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -38,6 +39,12 @@ public class SellerController {
     public ResponseEntity<SellerResponseDTO> updateSeller(@PathVariable Long id,
             @RequestBody @Valid SellerRequestDTO sellerRequestDTO) {
         return ResponseEntity.status(HttpStatus.OK).body(sellerService.updateSeller(id, sellerRequestDTO));
+    }
+
+    @DeleteMapping(value = "{id}")
+    public ResponseEntity<Object> deleteSellerById(@PathVariable Long id) {
+        sellerService.deleteSellerById(id);
+        return ResponseEntity.status(HttpStatus.OK).body("Seller removed successfully");
     }
 
 }

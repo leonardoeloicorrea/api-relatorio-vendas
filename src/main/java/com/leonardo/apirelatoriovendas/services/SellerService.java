@@ -38,6 +38,11 @@ public class SellerService {
         return new SellerResponseDTO(entity);
     }
 
+    public void deleteSellerById(Long id) {
+        findEntity(id);
+        sellerRepository.deleteById(id);
+    }
+
     public Seller convertDtoToEntity(SellerRequestDTO sellerDTO) {
         Seller entity = new Seller();
         entity.setName(sellerDTO.getName());
