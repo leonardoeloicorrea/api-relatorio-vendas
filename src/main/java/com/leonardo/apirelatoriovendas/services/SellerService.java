@@ -34,7 +34,6 @@ public class SellerService {
     }
 
     public SellerResponseDTO updateSeller(Long id, SellerRequestDTO sellerRequestDTO) {
-        findEntity(id);
         validateUniqueDateExcludingId(id, sellerRequestDTO);
         Seller entity = findEntity(id);
         entity.setName(sellerRequestDTO.getName());
@@ -49,7 +48,7 @@ public class SellerService {
         sellerRepository.deleteById(id);
     }
 
-    public Seller convertDtoToEntity(SellerRequestDTO sellerDTO) {
+    private Seller convertDtoToEntity(SellerRequestDTO sellerDTO) {
         Seller entity = new Seller();
         entity.setName(sellerDTO.getName());
         entity.setCpf(sellerDTO.getCpf());
@@ -57,19 +56,19 @@ public class SellerService {
         return entity;
     }
 
-    public void validateUniqueDate(SellerRequestDTO sellerRequestDTO) {
+    private void validateUniqueDate(SellerRequestDTO sellerRequestDTO) {
         if (sellerRepository.existsByCpf(sellerRequestDTO.getCpf())) {
             throw new DatabaseException("The entered cpf already exists");
         }
     }
 
-    public void validateUniqueDateExcludingId(Long id, SellerRequestDTO sellerRequestDTO) {
+    private void validateUniqueDateExcludingId(Long id, SellerRequestDTO sellerRequestDTO) {
         if (sellerRepository.existsByCpfExcludingId(id, sellerRequestDTO.getCpf()).isPresent()) {
             throw new DatabaseException("The entered cpf already exists");
         }
     }
 
-    private Seller findEntity(Long id) {
+    protected Seller findEntity(Long id) {
         return sellerRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Seller not found"));
     }
 

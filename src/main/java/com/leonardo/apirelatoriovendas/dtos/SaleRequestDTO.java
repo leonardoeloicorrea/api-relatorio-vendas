@@ -16,7 +16,7 @@ public class SaleRequestDTO implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @NotBlank(message = "Required field")
+    @NotNull(message = "Required field")
     @Positive(message = "The seller id must be greater 0")
     private Long sellerId;
 
