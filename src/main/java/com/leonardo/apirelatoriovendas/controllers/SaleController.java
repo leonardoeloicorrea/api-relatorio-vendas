@@ -3,6 +3,7 @@ package com.leonardo.apirelatoriovendas.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,7 +31,7 @@ public class SaleController {
     }
 
     @GetMapping(value = "{id}")
-    public ResponseEntity<SaleResponseDTO> findById(@PathVariable Long id) {
+    public ResponseEntity<SaleResponseDTO> findSaleById(@PathVariable Long id) {
         return ResponseEntity.status(HttpStatus.OK).body(saleService.findById(id));
     }
 
@@ -40,4 +41,9 @@ public class SaleController {
         return ResponseEntity.status(HttpStatus.OK).body(saleService.updateSale(id, saleRequestDTO));
     }
 
+    @DeleteMapping(value = "{id}")
+    public ResponseEntity<Object> deleteSaleById(@PathVariable Long id) {
+        saleService.deleteSaleById(id);
+        return ResponseEntity.status(HttpStatus.OK).body("Sale removed successfully");
+    }
 }

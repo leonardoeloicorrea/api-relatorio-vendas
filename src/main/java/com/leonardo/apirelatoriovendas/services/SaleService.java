@@ -40,6 +40,11 @@ public class SaleService {
         return new SaleResponseDTO(entity);
     }
 
+    public void deleteSaleById(Long id) {
+        findEntity(id);
+        saleRepository.deleteById(id);
+    }
+
     private Sale convertDtoToEntity(SaleRequestDTO saleRequestDTO) {
         Sale entity = new Sale();
         entity.setSeller(sellerService.findEntity(saleRequestDTO.getSellerId()));
