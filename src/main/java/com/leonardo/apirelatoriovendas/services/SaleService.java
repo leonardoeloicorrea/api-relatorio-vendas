@@ -32,6 +32,14 @@ public class SaleService {
         return new SaleResponseDTO(findEntity(id));
     }
 
+    public SaleResponseDTO updateSale(Long id, SaleRequestDTO saleRequestDTO) {
+        Sale entity = findEntity(id);
+        entity.setSeller(sellerService.findEntity(saleRequestDTO.getSellerId()));
+        entity.setTotalValue(saleRequestDTO.getTotalValue());
+        saleRepository.save(entity);
+        return new SaleResponseDTO(entity);
+    }
+
     private Sale convertDtoToEntity(SaleRequestDTO saleRequestDTO) {
         Sale entity = new Sale();
         entity.setSeller(sellerService.findEntity(saleRequestDTO.getSellerId()));
