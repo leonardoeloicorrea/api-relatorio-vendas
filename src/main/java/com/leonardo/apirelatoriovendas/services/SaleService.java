@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.leonardo.apirelatoriovendas.dtos.SaleRequestDTO;
@@ -30,6 +32,10 @@ public class SaleService {
 
     public SaleResponseDTO findById(Long id) {
         return new SaleResponseDTO(findEntity(id));
+    }
+
+    public Page<SaleResponseDTO> findAllSales(Pageable pageable) {
+        return saleRepository.findAllSales(pageable).map(x -> new SaleResponseDTO(x));
     }
 
     public SaleResponseDTO updateSale(Long id, SaleRequestDTO saleRequestDTO) {
