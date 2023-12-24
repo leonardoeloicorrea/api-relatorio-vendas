@@ -1,6 +1,7 @@
 package com.leonardo.apirelatoriovendas.dtos;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -21,6 +22,6 @@ public class SaleRequestDTO implements Serializable {
 
     @NotNull(message = "Required field")
     @Positive(message = "The total Value must be greater 0")
-    private Double totalValue;
+    private BigDecimal totalValue;
 
 }

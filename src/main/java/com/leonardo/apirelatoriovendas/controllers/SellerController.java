@@ -1,5 +1,7 @@
 package com.leonardo.apirelatoriovendas.controllers;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,10 +16,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.leonardo.apirelatoriovendas.dtos.SellerRequestDTO;
 import com.leonardo.apirelatoriovendas.dtos.SellerResponseDTO;
+import com.leonardo.apirelatoriovendas.dtos.salesAverageSellerDTO;
 import com.leonardo.apirelatoriovendas.services.SellerService;
 
 import jakarta.validation.Valid;
@@ -43,6 +47,14 @@ public class SellerController {
     public ResponseEntity<Page<SellerResponseDTO>> findAllSellers(
             @PageableDefault(page = 0, size = 10, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
         return ResponseEntity.status(HttpStatus.OK).body(sellerService.findAllSellers(pageable));
+    }
+
+    @GetMapping(value = "/averageSales")
+    public ResponseEntity<List<salesAverageSellerDTO>> averageSales(
+            @RequestParam(value = "initialDate", defaultValue = "") String initialDate,
+            @RequestParam(value = "finalDate", defaultValue = "") String finalDate) {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(sellerService.listSalesAveragesOfSellers(initialDate, finalDate));
     }
 
     @PutMapping(value = "{id}")

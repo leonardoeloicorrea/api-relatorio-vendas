@@ -1,6 +1,7 @@
 package com.leonardo.apirelatoriovendas.entities;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -35,7 +36,7 @@ public class Sale implements Serializable {
     private LocalDateTime dateOfSale;
 
     @Column(nullable = false)
-    private Double totalValue;
+    private BigDecimal totalValue;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "seller_id")

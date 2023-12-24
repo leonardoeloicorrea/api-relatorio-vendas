@@ -1,5 +1,7 @@
 package com.leonardo.apirelatoriovendas.services;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -7,7 +9,9 @@ import org.springframework.stereotype.Service;
 
 import com.leonardo.apirelatoriovendas.dtos.SellerRequestDTO;
 import com.leonardo.apirelatoriovendas.dtos.SellerResponseDTO;
+import com.leonardo.apirelatoriovendas.dtos.salesAverageSellerDTO;
 import com.leonardo.apirelatoriovendas.entities.Seller;
+import com.leonardo.apirelatoriovendas.projections.salesAverageOfTheSellerProjection;
 import com.leonardo.apirelatoriovendas.repositories.SellerRepository;
 import com.leonardo.apirelatoriovendas.services.exceptions.DatabaseException;
 import com.leonardo.apirelatoriovendas.services.exceptions.ResourceNotFoundException;
@@ -31,6 +35,12 @@ public class SellerService {
 
     public Page<SellerResponseDTO> findAllSellers(Pageable pageable) {
         return sellerRepository.findAllSellers(pageable).map(x -> new SellerResponseDTO(x));
+    }
+
+    public List<salesAverageSellerDTO> listSalesAveragesOfSellers(String initialDate, String finalDate) {
+        List<salesAverageOfTheSellerProjection> list = this.sellerRepository.getSalesAverageOfTheSeller(initialDate,
+                finalDate);
+        return list.stream().map(x -> new salesAverageSellerDTO(x)).toList();
     }
 
     public SellerResponseDTO updateSeller(Long id, SellerRequestDTO sellerRequestDTO) {
