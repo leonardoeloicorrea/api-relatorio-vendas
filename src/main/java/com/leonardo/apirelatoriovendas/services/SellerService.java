@@ -1,5 +1,8 @@
 package com.leonardo.apirelatoriovendas.services;
 
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,8 +41,13 @@ public class SellerService {
     }
 
     public List<salesAverageSellerDTO> listSalesAveragesOfSellers(String initialDate, String finalDate) {
-        List<salesAverageOfTheSellerProjection> list = this.sellerRepository.getSalesAverageOfTheSeller(initialDate,
-                finalDate);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate initialDate1 = LocalDate.parse(initialDate, formatter);
+        LocalDate finalDate1 = LocalDate.parse(finalDate, formatter);
+        Period period = Period.between(initialDate1, finalDate1);
+        int days = period.getDays();
+        List<salesAverageOfTheSellerProjection> list = this.sellerRepository.getSalesAverageOfTheSeller(initialDate1,
+                finalDate1, days);
         return list.stream().map(x -> new salesAverageSellerDTO(x)).toList();
     }
 

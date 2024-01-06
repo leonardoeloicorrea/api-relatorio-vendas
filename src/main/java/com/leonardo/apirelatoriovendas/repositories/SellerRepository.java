@@ -1,5 +1,6 @@
 package com.leonardo.apirelatoriovendas.repositories;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,12 +26,12 @@ public interface SellerRepository extends JpaRepository<Seller, Long> {
                         + " FROM Seller obj")
         Page<Seller> findAllSellers(Pageable pageable);
 
-        @Query(nativeQuery = true, value = "SELECT tb_seller.name, COUNT(tb_sale.id) AS totalSales, COUNT(tb_sale.id) / AVG(EXTRACT(DAY FROM (tb_sale.date_of_sale - TO_DATE(:initialDate, 'YYYY-MM-DD')))) AS averageSales"
-                        + " FROM tb_seller "
-                        + " INNER JOIN tb_sale ON tb_seller.id = tb_sale.seller_id "
-                        + " WHERE tb_sale.date_of_sale BETWEEN TO_DATE(:initialDate, 'YYYY-MM-DD') AND TO_DATE(:finalDate, 'YYYY-MM-DD')"
-                        + " GROUP BY tb_seller.name")
-        List<salesAverageOfTheSellerProjection> getSalesAverageOfTheSeller(@Param("initialDate") String initialDate,
-                        @Param("finalDate") String finalDate);
+        @Query(nativeQuery = true, value = "SELECT tb_seller.name, COUNT(tb_sale.seller_id) AS totalSales, SUM(tb_sale.total_value) AS totalSalesValue, ROUND(CAST(COUNT(tb_sale.seller_id) AS DECIMAL) / :period, 2) As averageSales "
+                        + "FROM tb_seller "
+                        + "INNER JOIN tb_sale ON tb_seller.id = tb_sale.seller_id "
+                        + "WHERE tb_sale.date_of_sale BETWEEN :initialDate AND :finalDate "
+                        + "GROUP BY tb_seller.name")
+        List<salesAverageOfTheSellerProjection> getSalesAverageOfTheSeller(@Param("initialDate") LocalDate initialDate,
+                        @Param("finalDate") LocalDate finalDate, @Param("period") Integer period);
 
 }

@@ -1,11 +1,15 @@
 package com.leonardo.apirelatoriovendas.projections;
 
+import java.math.BigDecimal;
+
 public interface salesAverageOfTheSellerProjection {
 
     String getName();
 
     Integer getTotalSales();
 
-    Double getAverageSales();
+    BigDecimal getTotalSalesValue();
+
+    BigDecimal getAverageSales();
 
 }
